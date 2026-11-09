@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fundo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="header-login-button" href="login.html">Entrar</a>
+  </header>
+  <div class="signup-container">
+    <img class="signup-logo" src="Roblox.png" alt="Roblox">
+    <main class="signup-card">
+      <h1>CADASTRE-SE E COMECE A SE DIVERTIR!</h1>
+
+      <form>
+        <div class="field-group">
+          <label>Data de nascimento</label>
+          <div class="date-fields">
+            <select name="birth-day" aria-label="Dia" required>
+              <option value="" selected disabled>Dia</option>
+            </select>
+            <select name="birth-month" aria-label="Mês" required>
+              <option value="" selected disabled>Mês</option>
+            </select>
+            <select name="birth-year" aria-label="Ano" required>
+              <option value="" selected disabled>Ano</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="username">Usuário</label>
+          <input id="username" name="username" type="text" placeholder="Não use o seu nome real">
+        </div>
+
+        <div class="field-group">
+          <label for="password">Senha</label>
+          <input id="password" name="password" type="password" placeholder="Mínimo de 8 caracteres">
+        </div>
+
+        <fieldset class="gender-group">
+          <legend>Gênero (opcional)</legend>
+          <div class="gender-options">
+            <button type="button" aria-label="Feminino">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="5" r="2.2"></circle>
+                <path d="M9.8 9h4.4l2.2 5.2-3.1 1.2-.5 5.1h-1.6l-.5-5.1-3.1-1.2L9.8 9Z"></path>
+                <path d="M10 10.2 7.8 14M14 10.2l2.2 3.8"></path>
+              </svg>
+            </button>
+            <button type="button" aria-label="Masculino">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 3h6v3H9z"></path>
+                <circle cx="12" cy="9" r="2"></circle>
+                <path d="M10 12h4l1 7h-6l1-7ZM12 19v3"></path>
+              </svg>
+            </button>
+          </div>
+        </fieldset>
+
+        <p class="terms">
+          Ao clicar em Cadastrar-se, você concorda com nossos <a href="#">Termos de Uso</a> (incluindo a arbitragem) e reconhece nossa <a href="#">Política de Privacidade</a>. Se você tiver menos de 18 anos, concorda que seus pais/responsáveis permitem que você crie esta conta e aceitam nossos Termos de Uso.
+        </p>
+
+        <button class="submit-button" type="submit" disabled>Cadastrar-se</button>
+      </form>
+    </main>
+    <aside class="age-rating" aria-label="Classificação indicativa: 16 anos">
+      <h2>CLASSIFICAÇÃO INDICATIVA: 16 ANOS</h2>
+      <div class="age-rating-panel">
+        <span class="age-rating-number">16</span>
+        <span class="age-rating-reason">Violência</span>
+      </div>
+      <p>Interação entre usuários<br>Compras no jogo (inclui itens aleatórios)</p>
+    </aside>
+  </div>
+  <script>
+    const [daySelect, monthSelect, yearSelect] = document.querySelectorAll(".date-fields select");
+    const addOptions = (select, options) => {
+      options.forEach(([value, label]) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = label;
+        select.append(option);
+      });
+    };
+
+    addOptions(daySelect, Array.from({ length: 31 }, (_, index) => {
+      const day = String(index + 1).padStart(2, "0");
+      return [day, day];
+    }));
+    addOptions(monthSelect, [
+      ["01", "Janeiro"], ["02", "Fevereiro"], ["03", "Março"],
+      ["04", "Abril"], ["05", "Maio"], ["06", "Junho"],
+      ["07", "Julho"], ["08", "Agosto"], ["09", "Setembro"],
+      ["10", "Outubro"], ["11", "Novembro"], ["12", "Dezembro"]
+    ]);
+
+    const currentYear = new Date().getFullYear();
+    addOptions(yearSelect, Array.from({ length: currentYear - 1899 }, (_, index) => {
+      const year = String(currentYear - index);
+      return [year, year];
+    }));
+  </script>
+</body>
+</html>
